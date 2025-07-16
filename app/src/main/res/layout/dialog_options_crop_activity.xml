@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"  
+    xmlns:app="http://schemas.android.com/apk/res-auto"  
+    android:layout_width="match_parent"  
+    android:layout_height="wrap_content"  
+    android:padding="16dp">
+
+    <LinearLayout  
+        android:orientation="vertical"  
+        android:layout_width="match_parent"  
+        android:layout_height="wrap_content"  
+        android:clipToPadding="false"  
+        android:clipChildren="false"  
+        android:divider="?android:attr/dividerVertical"  
+        android:showDividers="middle"  
+        android:dividerPadding="8dp">  
+
+        <!-- Format -->  
+        <com.google.android.material.card.MaterialCardView  
+            style="@style/Monet.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout  
+                android:orientation="vertical"  
+                android:padding="16dp"  
+                android:layout_width="match_parent"  
+                android:layout_height="wrap_content">  
+
+                <TextView  
+                    android:id="@+id/tvCompressionFormat_new"  
+                    android:text="Compression format"  
+                    android:textAppearance="?attr/textAppearanceTitleSmall"  
+                    android:layout_width="wrap_content"  
+                    android:layout_height="wrap_content" />  
+
+                <RadioGroup  
+                    android:id="@+id/rgCompressionFormat_new"  
+                    android:layout_width="match_parent"  
+                    android:layout_height="wrap_content"  
+                    android:layout_marginTop="8dp">  
+
+                    <RadioButton  
+                        android:id="@+id/rbFormatJpeg_new"  
+                        android:text="JPEG"  
+                        android:checked="true" />  
+
+                    <RadioButton  
+                        android:id="@+id/rbFormatPng_new"  
+                        android:text="PNG" />  
+
+                    <RadioButton  
+                        android:id="@+id/rbFormatWebp_new"  
+                        android:text="WEBP" />  
+                </RadioGroup>  
+            </LinearLayout>  
+        </com.google.android.material.card.MaterialCardView>  
+
+        <!-- Quality -->  
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Monet.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvImageQuality_new"
+                    android:text="Quality: 75%"
+                    android:textAppearance="?attr/textAppearanceTitleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <SeekBar
+                    android:id="@+id/seekBarQuality_new"
+                    android:max="100"
+                    android:progress="75"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+          
+        <!-- Save Destination with Folder Picker -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Monet.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout  
+                android:orientation="vertical"  
+                android:padding="16dp"  
+                android:layout_width="match_parent"  
+                android:layout_height="wrap_content">  
+
+                <TextView  
+                    android:id="@+id/tvSaveDestination_new"  
+                    android:text="Save destination"  
+                    android:textAppearance="?attr/textAppearanceTitleSmall"  
+                    android:layout_width="wrap_content"  
+                    android:layout_height="wrap_content" />  
+
+                <RadioGroup  
+                    android:id="@+id/rgSaveLocation_new"  
+                    android:layout_width="match_parent"  
+                    android:layout_height="wrap_content"  
+                    android:layout_marginTop="8dp">  
+
+                    <RadioButton  
+                        android:id="@+id/rbSaveInternal_new"  
+                        android:text="/Resized/Picture/"  
+                        android:checked="true" />  
+
+                    <RadioButton  
+                        android:id="@+id/rbSaveToFolder_new"  
+                        android:text="Select folder manually" />  
+                </RadioGroup>  
+
+                <Button  
+                    android:id="@+id/btnPickFolder_new"  
+                    android:layout_width="wrap_content"  
+                    android:layout_height="wrap_content"  
+                    android:text="Pick Folder"  
+                    android:layout_marginTop="8dp"  
+                    android:visibility="gone" />  
+
+                <TextView  
+                    android:id="@+id/tvSelectedFolderPath_new"  
+                    android:layout_width="match_parent"  
+                    android:layout_height="wrap_content"  
+                    android:text="No folder selected"  
+                    android:layout_marginTop="4dp"  
+                    android:textColor="?attr/colorOnSurfaceVariant"  
+                    android:textAppearance="?attr/textAppearanceBodySmall" />  
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Confirm Button -->  
+        <com.google.android.material.button.MaterialButton  
+            android:id="@+id/btnPickAndCrop_new"  
+            android:text="Pick &amp; Crop"  
+            style="@style/Widget.Material3.Button"  
+            android:layout_width="match_parent"  
+            android:layout_height="wrap_content"  
+            android:layout_marginTop="8dp"  
+            android:layout_marginBottom="16dp" />  
+
+    </LinearLayout>
+
+</ScrollView>

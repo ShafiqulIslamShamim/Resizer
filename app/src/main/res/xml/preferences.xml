@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>  <PreferenceScreen  
+xmlns:android="http://schemas.android.com/apk/res/android"  
+android:key="main_settings"  
+android:title="Settings">
+
+<PreferenceScreen  
+android:icon="@drawable/android_24px"
+    android:key="pref_screen_system_key"  
+    android:title="System">
+    <com.resizer.imageeditor.MaterialListPreference
+            android:icon="@drawable/routine_24px"
+            android:key="theme_preference"
+            android:title="App theme"
+            android:summary="%s"
+            android:entries="@array/theme_options"
+            android:entryValues="@array/theme_option_values"
+            android:defaultValue="0"/>
+            
+    <com.resizer.imageeditor.StringSwitchPreference
+    android:icon="@drawable/code_24px"
+    android:key="enable_logcat"
+    android:title="Enable Logcat"
+    android:summary="Turn on to enable logcat logging"
+    android:defaultValue="false" />        
+    </PreferenceScreen>
+
+
+<PreferenceScreen  
+android:icon="@drawable/info_24px"
+    android:key="pref_screen_info_key"  
+    android:title="About info">
+    <com.resizer.imageeditor.AboutInfoPreference
+        android:key="pref_about_info_key"
+        android:title=""
+        android:summary="" />
+    </PreferenceScreen>
+    
+</PreferenceScreen>

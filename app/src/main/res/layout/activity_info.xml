@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Monet.Card"
+        android:id="@+id/about_card"
+        android:padding="20.0dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10.0dip"
+        android:layout_marginStart="15.0dip"
+        android:layout_marginEnd="15.0dip"
+        android:elevation="20.0dip"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="20.0dip"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:textSize="19.0sp"
+                android:textStyle="bold"
+                
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0.0dip"
+                android:text="Developed by" />
+            <TextView
+                android:textSize="22.0sp"
+                android:textStyle="bold"
+                
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20.0dip"
+                android:text="Shafiqul Islam Shamim" />
+            <TextView
+                android:textSize="15.0sp"
+               
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5.0dip"
+                android:text="Android App Developer" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    <GridLayout
+    android:layout_gravity="center"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
+    android:padding="0.0dip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:rowCount="1"
+    android:columnCount="2">
+        <com.google.android.material.card.MaterialCardView
+        style="@style/Monet.Card"
+            android:layout_gravity="center"
+            android:padding="20.0dip"
+            android:layout_width="150.0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.0dip"
+            android:id="@+id/facebook"
+            android:layout_marginEnd="5.0dip"
+            android:elevation="20.0dip"
+            >
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25.0dip"
+                android:layout_marginBottom="25.0sp">
+                <ImageView
+                    
+                    android:layout_width="35.0dip"
+                    android:layout_height="35.0dip"
+                    android:src="@drawable/facebook"
+                    app:tint="?attr/colorOnSecondaryContainer"                      android:layout_marginStart="0.0dip" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+        style="@style/Monet.Card"
+            android:layout_gravity="center"
+            android:padding="20.0dip"
+            android:layout_width="150.0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10.0dip"
+            android:id="@+id/github"
+            android:layout_marginStart="5.0dip"
+            android:elevation="20.0dip" >
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25.0dip"
+                android:layout_marginBottom="25.0sp">
+                <ImageView
+                    
+                    android:layout_width="35.0dip"
+                    android:layout_height="35.0dip"
+                    android:src="@drawable/github"
+                    app:tint="?attr/colorOnSecondaryContainer"
+                    android:layout_marginStart="0.0dip"/>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </GridLayout>
+    
+    
+    
+    
+    
+    <com.google.android.material.card.MaterialCardView
+    style="@style/Monet.Card"
+    android:id="@+id/update_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10.0dip"
+    android:layout_marginStart="15.0dip"
+    android:layout_marginEnd="15.0dip"
+    android:elevation="20.0dip"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center" 
+        android:padding="20.0dip">
+
+        <TextView
+            android:textSize="22.0sp"
+            android:textStyle="bold"
+           
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check for updates" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
+    
+</LinearLayout>

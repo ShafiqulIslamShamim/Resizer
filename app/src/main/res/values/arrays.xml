@@ -1,0 +1,18 @@
+<resources>
+
+
+<!-- Theme options for spinner/list -->
+    <string-array name="theme_options">
+        <item>Follow System</item>
+        <item>Dark Mode</item>
+        <item>Light Mode</item>
+    </string-array>
+
+    <!-- Theme option values (correspond to AppCompatDelegate modes) -->
+    <string-array name="theme_option_values">
+        <item>0</item>  <!-- MODE_NIGHT_FOLLOW_SYSTEM -->
+        <item>2</item>  <!-- MODE_NIGHT_YES -->
+        <item>3</item>  <!-- MODE_NIGHT_NO -->
+    </string-array>
+    
+    </resources>

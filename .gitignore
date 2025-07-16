@@ -1,0 +1,77 @@
+# ========================================
+# ✅ Built application files
+*.apk
+*.aab
+*.aar
+*.ap_
+
+# ✅ ART/Dalvik VM & Java class files
+*.dex
+*.class
+
+# ✅ Build, generated, and output folders
+/build/
+/app/build/
+/bin/
+/gen/
+/out/
+/captures/
+.externalNativeBuild/
+/.cxx/
+
+# ✅ Gradle
+.gradle/
+local.properties
+
+# ✅ Android Studio & IntelliJ IDE
+.idea/
+/*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries/
+.idea/libraries/
+.idea/caches/
+.idea/modules.xml
+.idea/navEditor.xml
+
+# ✅ Keystore & security
+*.jks
+*.keystore
+*.pem
+*.p12
+app/keystore/*
+
+# ✅ Logs, backups, temps
+*.log
+*.bak
+*.tmp
+*.swp
+
+# ✅ AndroidIDE (AIDE or .androidide temp)
+.androidide/
+
+# ✅ Git (AIDE or .git temp)
+.git/
+
+# ✅ Navigation editor
+.navigation/
+
+# ✅ Proguard (for Eclipse, not needed)
+proguard/
+
+# ✅ Lint
+lint/
+
+# ✅ Fastlane (for automated builds/releases)
+fastlane/
+freeline/
+freeline.py
+freeline_project_description.json
+
+# ✅ Firebase config (if you don't want to upload)
+# google-services.json
+
+# ✅ Version control
+vcs.xml

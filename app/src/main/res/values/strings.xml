@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Resizer</string>
+    <string name="settings">Settings</string>
+   <string name="shortcut_main_short">Home</string>
+<string name="shortcut_main_long">Open Main Screen</string>
+<string name="shortcut_settings_short">Settings</string>
+<string name="shortcut_settings_long">Open Settings</string>
+
+</resources>
