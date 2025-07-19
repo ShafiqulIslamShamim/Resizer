@@ -72,21 +72,21 @@ Having trouble?
 
 ## 🖼️ Screenshots
 
-| About Info Page | Before & After Preview |
-|-----------------|------------------------|
-| ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/AboutInfoPage.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/Before&AfterPreview.jpg) |
-
-| Crop Activity (Default) | Crop Activity (Zoomed) |
-|--------------------------|------------------------|
-| ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/CropActivityDefault.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/CropActivityZoom.jpg) |
+| Resizer Editor Fragment | System Settings |
+|--------------------------|------------------|
+| ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/ResizerEditorFragment.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/SystemSettings.jpg) |
 
 | Crop Dialog | Editor Dialog |
 |-------------|----------------|
 | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/CropDialog.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/EditorDialog.jpg) |
 
-| Resizer Editor Fragment | System Settings |
-|--------------------------|------------------|
-| ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/ResizerEditorFragment.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/SystemSettings.jpg) |
+| Crop Activity (Default) | Crop Activity (Zoomed) |
+|--------------------------|------------------------|
+| ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/CropActivityDefault.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/CropActivityZoom.jpg) |
+
+| About Info Page | Before & After Preview |
+|-----------------|------------------------|
+| ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/AboutInfoPage.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/Before&AfterPreview.jpg) |
 
 ---
 
@@ -127,4 +127,4 @@ Let’s make **Resizer** even more powerful together.
 
 ## 📦 Download
 
-📥 **[Download the latest release here](https://github.com/ShafiqulIslamShamim/Resizer/releases/tag/v1.1)**  
+📥 **[Download the latest release here](https://github.com/ShafiqulIslamShamim/Resizer/releases/tag/v1.0)**  
