@@ -84,9 +84,9 @@ Having trouble?
 |--------------------------|------------------------|
 | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/CropActivityDefault.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/CropActivityZoom.jpg) |
 
-| About Info Page | Before & After Preview |
+| Before & After Preview | About Info Page |
 |-----------------|------------------------|
-| ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/AboutInfoPage.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/Before&AfterPreview.jpg) |
+| ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/Before&AfterPreview.jpg) | ![](https://github.com/ShafiqulIslamShamim/Resizer/raw/main/screenshots/AboutInfoPage.jpg) |
 
 ---
 
