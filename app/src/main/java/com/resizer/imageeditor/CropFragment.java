@@ -192,10 +192,12 @@ public class CropFragment extends Fragment {
               + ImageUtils.getFileSizeKb(requireContext(), sourceUri)
               + " KB");
 
-      new OptionsDialogCropActivity(
+      OptionsDialogCropActivity dialog =
+          new OptionsDialogCropActivity(
               new OptionsDialogCropActivity.OptionsDialogListener() {
                 @Override
-                public void onOptionsSelected(String format, int q) {
+                public void onOptionsSelected(
+                    String format, int q, String aspect, int customW, int customH) {
                   quality = q;
                   outFormat = format;
                   keepExif = true;
@@ -205,7 +207,57 @@ public class CropFragment extends Fragment {
                           new File(
                               requireContext().getCacheDir(),
                               "cropped" + ImageUtils.getExtension(format)));
+
                   UCrop uCrop = UCrop.of(sourceUri, destUri);
+
+                  switch (aspect) {
+                    case "square":
+                    case "1:1":
+                      uCrop.withAspectRatio(1, 1);
+                      break;
+                    case "4:3":
+                      uCrop.withAspectRatio(4, 3);
+                      break;
+                    case "3:2":
+                      uCrop.withAspectRatio(3, 2);
+                      break;
+                    case "5:4":
+                      uCrop.withAspectRatio(5, 4);
+                      break;
+                    case "16:9":
+                      uCrop.withAspectRatio(16, 9);
+                      break;
+                    case "9:16":
+                      uCrop.withAspectRatio(9, 16);
+                      break;
+                    case "2:1":
+                      uCrop.withAspectRatio(2, 1);
+                      break;
+                    case "21:9":
+                      uCrop.withAspectRatio(21, 9);
+                      break;
+                    case "3:1":
+                      uCrop.withAspectRatio(3, 1);
+                      break;
+                    case "custom":
+                      if (customW > 0 && customH > 0) {
+                        uCrop.withAspectRatio(customW, customH);
+                      }
+                      break;
+                    case "free":
+                      uCrop.useSourceImageAspectRatio(); // optional
+                      uCrop.withOptions(
+                          new UCrop.Options() {
+                            {
+                              setFreeStyleCropEnabled(true);
+                            }
+                          });
+                      break;
+                    case "default":
+                    default:
+                      // Don't enforce any aspect ratio
+                      break;
+                  }
 
                   cropLauncher.launch(uCrop.getIntent(requireContext()));
                 }
@@ -214,8 +266,12 @@ public class CropFragment extends Fragment {
                 public void onPickFolderRequested() {
                   pickFolder();
                 }
-              })
-          .show(getParentFragmentManager(), "OptionsDialogCropActivity");
+              });
+
+      // 👇 Inject image dimensions before showing the dialog
+      dialog.setImageDimensions(bmp.getWidth(), bmp.getHeight());
+
+      dialog.show(getParentFragmentManager(), "OptionsDialogCropActivity");
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -242,7 +298,7 @@ public class CropFragment extends Fragment {
     String originalName = getFileNameFromUri(sourceUri);
     String baseName =
         (originalName != null) ? originalName.replaceAll("\\.[^.]+$", "") : "new_image";
-    String fileName = "resized_" + baseName;
+    String fileName = "cropped_" + baseName;
 
     ImageInfo info =
         ImageUtils.resizeCompressCropActivity(
@@ -290,7 +346,7 @@ public class CropFragment extends Fragment {
     }
 
     if (result == null || result.contains(":")) {
-      result = "resized_" + System.currentTimeMillis();
+      result = "cropped_" + System.currentTimeMillis();
     }
 
     return result;

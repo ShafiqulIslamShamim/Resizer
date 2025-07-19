@@ -1,68 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<?xml version="1.0" encoding="utf-8" ?>
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:padding="16dp"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+>
     <LinearLayout
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="21dp"
-        android:paddingStart="22dp"
-        android:paddingEnd="22dp">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="21dp"
+    android:paddingStart="22dp"
+    android:paddingEnd="22dp"
+  >
         <com.google.android.material.button.MaterialButton
-            android:textStyle="bold"
-            android:id="@+id/btnSelect"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="Select Image"
-            android:paddingHorizontal="32dp"
-            android:paddingVertical="12dp"
-            app:cornerRadius="50dp" />
+      android:textStyle="bold"
+      android:id="@+id/btnSelect"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="24dp"
+      android:text="Select Image"
+      android:paddingHorizontal="32dp"
+      android:paddingVertical="12dp"
+      app:cornerRadius="50dp"
+    />
         <TextView
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:id="@+id/tvInfoBefore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Before:" />
+      android:textSize="16sp"
+      android:textStyle="bold"
+      android:id="@+id/tvInfoBefore"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:text="Before:"
+    />
         <ImageView
-            android:id="@+id/ivBefore"
-            android:background="@drawable/image_card_shape"
-            android:layout_width="match_parent"
-            android:layout_height="270dp"
-            android:layout_marginBottom="24dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
+      android:id="@+id/ivBefore"
+      android:background="@drawable/image_card_shape"
+      android:layout_width="match_parent"
+      android:layout_height="270dp"
+      android:layout_marginBottom="24dp"
+      android:scaleType="fitCenter"
+      android:adjustViewBounds="true"
+    />
         <TextView
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:id="@+id/tvInfoAfter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="After:" />
+      android:textSize="16sp"
+      android:textStyle="bold"
+      android:id="@+id/tvInfoAfter"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:text="After:"
+    />
         <ImageView
-            android:id="@+id/ivAfter"
-            android:background="@drawable/image_card_shape"
-            android:layout_width="match_parent"
-            android:layout_height="270dp"
-            android:layout_marginBottom="24dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
+      android:id="@+id/ivAfter"
+      android:background="@drawable/image_card_shape"
+      android:layout_width="match_parent"
+      android:layout_height="270dp"
+      android:layout_marginBottom="24dp"
+      android:scaleType="fitCenter"
+      android:adjustViewBounds="true"
+    />
         <com.google.android.material.button.MaterialButton
-            android:textStyle="bold"
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Save Image"
-            android:paddingHorizontal="32dp"
-            android:paddingVertical="12dp"
-            app:cornerRadius="50dp" />
+      android:textStyle="bold"
+      android:id="@+id/btnSave"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:text="Save Image"
+      android:paddingHorizontal="32dp"
+      android:paddingVertical="12dp"
+      app:cornerRadius="50dp"
+    />
     </LinearLayout>
 </ScrollView>

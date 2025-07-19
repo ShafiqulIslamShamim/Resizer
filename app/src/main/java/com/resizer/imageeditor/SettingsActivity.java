@@ -44,8 +44,8 @@ public class SettingsActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     // ✅ Enable edge-to-edge
     WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-    super.onCreate(savedInstanceState);
     applyLocalTheme();
+    super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
 
     // ✅ Apply insets to root view

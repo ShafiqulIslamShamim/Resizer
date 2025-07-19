@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <resources>
 
     <!-- Card theme -->
@@ -21,6 +21,9 @@
     </style>
 
     <!-- Button theme -->
-    <style name="DashchanMonet.Button" parent="@style/Widget.Material3.Button" />
+    <style
+    name="DashchanMonet.Button"
+    parent="@style/Widget.Material3.Button"
+  />
 
 </resources>

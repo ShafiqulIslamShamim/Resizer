@@ -1,117 +1,132 @@
-<?xml version="1.0" encoding="utf-8"?>  
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"  
-xmlns:app="http://schemas.android.com/apk/res-auto"  
-android:layout_width="match_parent"  
-android:layout_height="wrap_content"  
-android:padding="16dp">
+<?xml version="1.0" encoding="utf-8" ?>
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:padding="16dp"
+>
 
-<LinearLayout  
-    android:orientation="vertical"  
-    android:layout_width="match_parent"  
-    android:layout_height="wrap_content"  
-    android:clipToPadding="false"  
-    android:clipChildren="false"  
-    android:divider="?android:attr/dividerVertical"  
-    android:showDividers="middle"  
-    android:dividerPadding="8dp">  
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    android:divider="?android:attr/dividerVertical"
+    android:showDividers="middle"
+    android:dividerPadding="8dp"
+  >  
 
     <!-- Aspect Ratio -->  
-    <com.google.android.material.card.MaterialCardView  
-        style="@style/Monet.Card"
-
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginBottom="12dp"
-app:cardElevation="2dp"
-app:cardCornerRadius="16dp">
+    <com.google.android.material.card.MaterialCardView
+      style="@style/Monet.Card"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="12dp"
+      app:cardElevation="2dp"
+      app:cardCornerRadius="16dp"
+    >
 
 
     </com.google.android.material.card.MaterialCardView>  
 
     <!-- Resize -->  
-    <com.google.android.material.card.MaterialCardView  
-        style="@style/Monet.Card"
+    <com.google.android.material.card.MaterialCardView
+      style="@style/Monet.Card"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="12dp"
+      app:cardElevation="2dp"
+      app:cardCornerRadius="16dp"
+    >
 
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginBottom="12dp"
-app:cardElevation="2dp"
-app:cardCornerRadius="16dp">
-
-<LinearLayout  
-            android:orientation="vertical"  
-            android:padding="16dp"  
-            android:layout_width="match_parent"  
-            android:layout_height="wrap_content">
+<LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      >
             
-               <TextView  
-        android:text="Desired resolution"  
-        android:textAppearance="?attr/textAppearanceTitleSmall"  
-        android:layout_width="wrap_content"  
-        android:layout_height="wrap_content" />   
+               <TextView
+          android:text="Desired resolution"
+          android:textAppearance="?attr/textAppearanceTitleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+        />   
 
-            <LinearLayout  
-                android:orientation="horizontal"  
-                android:layout_width="match_parent"  
-                android:layout_height="wrap_content"  
-                android:layout_marginTop="8dp">
+            <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+        >
                 
                     
 
-                <EditText  
-                    android:id="@+id/etWidth"  
-                    android:layout_weight="1"  
-                    android:layout_width="0dp"  
-                    android:layout_height="wrap_content"  
-                    android:hint="Width"  
-                    android:inputType="number" />  
+                <EditText
+            android:id="@+id/etWidth"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Width"
+            android:inputType="number"
+          />  
 
-                <TextView  
-                    android:text="x"  
-                    android:layout_width="wrap_content"  
-                    android:layout_height="wrap_content"  
-                    android:padding="8dp" />  
+                <TextView
+            android:text="x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+          />  
 
-                <EditText  
-                    android:id="@+id/etHeight"  
-                    android:layout_weight="1"  
-                    android:layout_width="0dp"  
-                    android:layout_height="wrap_content"  
-                    android:hint="Height"  
-                    android:inputType="number" />  
+                <EditText
+            android:id="@+id/etHeight"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Height"
+            android:inputType="number"
+          />  
             </LinearLayout>  
         </LinearLayout>  
     </com.google.android.material.card.MaterialCardView>  
 
     <!-- Format -->  
-    <com.google.android.material.card.MaterialCardView  
-        style="@style/Monet.Card"
+    <com.google.android.material.card.MaterialCardView
+      style="@style/Monet.Card"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="12dp"
+      app:cardElevation="2dp"
+      app:cardCornerRadius="16dp"
+    >
 
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginBottom="12dp"
-app:cardElevation="2dp"
-app:cardCornerRadius="16dp">
+<LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      >  
 
-<LinearLayout  
-            android:orientation="vertical"  
-            android:padding="16dp"  
-            android:layout_width="match_parent"  
-            android:layout_height="wrap_content">  
+            <TextView
+          android:text="Compression format"
+          android:textAppearance="?attr/textAppearanceTitleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+        />  
 
-            <TextView  
-                android:text="Compression format"  
-                android:textAppearance="?attr/textAppearanceTitleSmall"  
-                android:layout_width="wrap_content"  
-                android:layout_height="wrap_content" />  
-
-            <RadioGroup  
-                android:id="@+id/rgFormat"  
-                android:layout_width="match_parent"  
-                android:layout_height="wrap_content"  
-                android:layout_marginTop="8dp">  
-                <RadioButton android:id="@+id/rbJpeg" android:text="JPEG"
-                android:checked="true" />  
+            <RadioGroup
+          android:id="@+id/rgFormat"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+        >  
+                <RadioButton
+            android:id="@+id/rbJpeg"
+            android:text="JPEG"
+            android:checked="true"
+          />  
                 <RadioButton android:id="@+id/rbPng" android:text="PNG" />  
                 <RadioButton android:id="@+id/rbWebp" android:text="WEBP" />  
             </RadioGroup>  
@@ -120,64 +135,72 @@ app:cardCornerRadius="16dp">
 
     <!-- Quality -->  
 <com.google.android.material.card.MaterialCardView
-    style="@style/Monet.Card"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardElevation="2dp"
-    app:cardCornerRadius="16dp">
+      style="@style/Monet.Card"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="12dp"
+      app:cardElevation="2dp"
+      app:cardCornerRadius="16dp"
+    >
 
     <LinearLayout
         android:orientation="vertical"
         android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+      >
 
         <TextView
-            android:id="@+id/tvQuality"
-            android:text="Quality: 75%"
-            android:textAppearance="?attr/textAppearanceTitleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+          android:id="@+id/tvQuality"
+          android:text="Quality: 75%"
+          android:textAppearance="?attr/textAppearanceTitleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+        />
 
         <SeekBar
-            android:id="@+id/seekQuality"
-            android:max="100"
-            android:progress="75"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+          android:id="@+id/seekQuality"
+          android:max="100"
+          android:progress="75"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+        />
 
         <!-- Size Restriction -->
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center_vertical">
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="12dp"
+          android:gravity="center_vertical"
+        >
 
             <TextView
-                android:id="@+id/tvSizeRestriction"
-                android:text="Max file size"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:id="@+id/tvSizeRestriction"
+            android:text="Max file size"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+          />
 
             <EditText
-                android:id="@+id/etMaxFileSize"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:hint="e.g. 500"
-                android:inputType="number" />
+            android:id="@+id/etMaxFileSize"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:hint="e.g. 500"
+            android:inputType="number"
+          />
 
             <TextView
-                android:id="@+id/tvSizeUnit"
-                android:text="KB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textAppearance="?attr/textAppearanceBodySmall" />
+            android:id="@+id/tvSizeUnit"
+            android:text="KB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+          />
         </LinearLayout>
 
     </LinearLayout>
@@ -190,71 +213,80 @@ app:cardCornerRadius="16dp">
     <!-- Save Destination with Folder Picker -->
 
 <com.google.android.material.card.MaterialCardView
-style="@style/Monet.Card"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_marginBottom="12dp"
-app:cardElevation="2dp"
-app:cardCornerRadius="16dp">
+      style="@style/Monet.Card"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="12dp"
+      app:cardElevation="2dp"
+      app:cardCornerRadius="16dp"
+    >
 
-<LinearLayout  
-    android:orientation="vertical"  
-    android:padding="16dp"  
-    android:layout_width="match_parent"  
-    android:layout_height="wrap_content">  
+<LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      >  
 
-    <TextView  
-        android:text="Save destination"  
-        android:textAppearance="?attr/textAppearanceTitleSmall"  
-        android:layout_width="wrap_content"  
-        android:layout_height="wrap_content" />  
+    <TextView
+          android:text="Save destination"
+          android:textAppearance="?attr/textAppearanceTitleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+        />  
 
-    <RadioGroup  
-        android:id="@+id/rgSaveLocation"  
-        android:layout_width="match_parent"  
-        android:layout_height="wrap_content"  
-        android:layout_marginTop="8dp">  
+    <RadioGroup
+          android:id="@+id/rgSaveLocation"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+        >  
 
-        <RadioButton  
-            android:id="@+id/rbSaveInternal"  
-            android:text="/Resized/Picture/"  
-            android:checked="true" />  
+        <RadioButton
+            android:id="@+id/rbSaveInternal"
+            android:text="/Resized/Picture/"
+            android:checked="true"
+          />  
 
-        <RadioButton  
-            android:id="@+id/rbSaveToFolder"  
-            android:text="Select folder manually" />  
+        <RadioButton
+            android:id="@+id/rbSaveToFolder"
+            android:text="Select folder manually"
+          />  
     </RadioGroup>  
 
-    <Button  
-        android:id="@+id/btnPickFolder"  
-        android:layout_width="wrap_content"  
-        android:layout_height="wrap_content"  
-        android:text="Pick Folder"  
-        android:layout_marginTop="8dp"  
-        android:visibility="gone" />  
+    <Button
+          android:id="@+id/btnPickFolder"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="Pick Folder"
+          android:layout_marginTop="8dp"
+          android:visibility="gone"
+        />  
 
-    <TextView  
-        android:id="@+id/tvFolderPath"  
-        android:layout_width="match_parent"  
-        android:layout_height="wrap_content"  
-        android:text="No folder selected"  
-        android:layout_marginTop="4dp"  
-        android:textColor="?attr/colorOnSurfaceVariant"  
-        android:textAppearance="?attr/textAppearanceBodySmall" />  
+    <TextView
+          android:id="@+id/tvFolderPath"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="No folder selected"
+          android:layout_marginTop="4dp"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:textAppearance="?attr/textAppearanceBodySmall"
+        />  
 
 </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
 
 <!-- Confirm Button -->  
-    <com.google.android.material.button.MaterialButton  
-        android:id="@+id/btnPickCrop"  
-        android:text="Pick &amp; Crop"  
-        style="@style/Widget.Material3.Button"  
-        android:layout_width="match_parent"  
-        android:layout_height="wrap_content"  
-        android:layout_marginTop="8dp"  
-        android:layout_marginBottom="16dp" />  
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/btnPickCrop"
+      android:text="Pick &amp; Crop"
+      style="@style/Widget.Material3.Button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="16dp"
+    />  
 
 </LinearLayout>
 

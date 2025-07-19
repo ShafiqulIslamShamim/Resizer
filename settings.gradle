@@ -11,7 +11,7 @@ dependencyResolutionManagement {
   repositories {
     google()
     mavenCentral()
-    maven { url 'https://jitpack.io' } // ✅ এটি যোগ করুন
+    maven { url 'https://jitpack.io' }
     
   }
 }

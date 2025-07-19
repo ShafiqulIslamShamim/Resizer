@@ -5,8 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -22,9 +27,11 @@ public class TabbedActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    // ✅ Enable edge-to-edge
+    WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+    applyLocalTheme();
     super.onCreate(savedInstanceState);
     ActivityContext = this;
-    applyLocalTheme(); // 👈 Apply local theme
 
     OTAUpdateHelper.checkForUpdatesIfDue(this);
 
@@ -38,6 +45,16 @@ public class TabbedActivity extends AppCompatActivity {
     }
 
     setContentView(R.layout.activity_tabbed);
+
+    // ✅ Apply insets to root view
+    View rootView = findViewById(android.R.id.content);
+    ViewCompat.setOnApplyWindowInsetsListener(
+        rootView,
+        (v, insets) -> {
+          Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+          v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+          return insets;
+        });
 
     MaterialToolbar toolbar = findViewById(R.id.topAppBar);
     setSupportActionBar(toolbar);
@@ -95,16 +112,36 @@ public class TabbedActivity extends AppCompatActivity {
       Log.e(TAG, "Menu item 'settings' or drawable 'ic_settings' not found");
     }
 
+    // Reset button
+    int ResetId = getResources().getIdentifier("action_reset", "id", getPackageName());
+    int ResetIconId = getResources().getIdentifier("ic_reset", "drawable", getPackageName());
+    if (ResetId != 0 && ResetIconId != 0) {
+      menu.findItem(ResetId).setIcon(ResetIconId);
+    } else {
+      Log.e(TAG, "Menu item 'Reset' or drawable 'ic_reset' not found");
+    }
+
     return true;
   }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
 
+    int id = item.getItemId();
+
     int settingsId = getResources().getIdentifier("settings", "id", getPackageName());
 
-    if (item.getItemId() == settingsId) {
+    if (id == settingsId) {
       startActivity(new Intent(this, SettingsActivity.class));
+      return true;
+    }
+
+    if (id == R.id.action_reset) {
+      // Restart the activity
+      Intent intent = new Intent(this, TabbedActivity.class);
+      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+      finish(); // Close the current instance
+      startActivity(intent); // Start a new instance
       return true;
     }
 

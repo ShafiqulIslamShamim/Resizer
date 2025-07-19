@@ -9,6 +9,7 @@ import androidx.documentfile.provider.DocumentFile;
 import androidx.exifinterface.media.ExifInterface;
 import com.resizer.imageeditor.*;
 import com.resizer.imageeditor.models.ImageInfo;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -65,7 +66,17 @@ public class ImageUtils {
 
       if (!save) {
         // Return bitmap info only
-        int sizeKb = bitmap.getByteCount() / 1024;
+        // int sizeKb = bitmap.getByteCount() / 1024;
+
+        // ✅ Apply KB Restriction if given
+        if (sizeLimitKbStr != null && !sizeLimitKbStr.isEmpty()) {
+          int targetSizeKb = Integer.parseInt(sizeLimitKbStr);
+          quality = adjustQualityForSize(bitmap, compressFormat, targetSizeKb, quality);
+        }
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(compressFormat, quality, stream);
+        int sizeKb = stream.toByteArray().length / 1024;
         return new ImageInfo(bitmap.getWidth(), bitmap.getHeight(), sizeKb, format, "");
       }
 
@@ -237,25 +248,29 @@ public class ImageUtils {
   // ✅ Dynamically adjust quality to meet size limit
   private static int adjustQualityForSize(
       Bitmap bitmap, Bitmap.CompressFormat format, int targetSizeKb, int initialQuality) {
-    int quality = initialQuality;
-    int minQuality = 10; // Prevent going too low
-    int step = 5;
+    int minQuality = 10;
+    int maxQuality = initialQuality;
+    int bestQuality = minQuality;
+    int low = minQuality;
+    int high = maxQuality;
 
-    try {
-      while (quality >= minQuality) {
-        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-        bitmap.compress(format, quality, baos);
-        int sizeKb = baos.toByteArray().length / 1024;
+    while (low <= high) {
+      int midQuality = (low + high) / 2;
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      bitmap.compress(format, midQuality, baos);
+      int sizeKb = baos.toByteArray().length / 1024;
 
-        if (sizeKb <= targetSizeKb) {
-          break;
-        }
-        quality -= step;
+      if (sizeKb > targetSizeKb) {
+        // ফাইল বড় হয়ে যাচ্ছে, কম মানে যেতে হবে
+        high = midQuality - 1;
+      } else {
+        // ফাইল সাইজ সীমার মধ্যে আছে, কিন্তু আরও ভাল মান পাওয়া যায় কি না দেখি
+        bestQuality = midQuality;
+        low = midQuality + 1;
       }
-    } catch (Exception ignored) {
     }
 
-    return quality;
+    return bestQuality;
   }
 
   private static Bitmap.CompressFormat getCompressFormat(String format) {

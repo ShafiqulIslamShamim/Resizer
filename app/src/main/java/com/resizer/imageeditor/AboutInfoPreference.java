@@ -20,6 +20,7 @@ public class AboutInfoPreference extends Preference {
     View facebook = holder.findViewById(R.id.facebook);
     View github = holder.findViewById(R.id.github);
     View cardUpdate = holder.findViewById(R.id.update_card);
+    View privacypolicyCard = holder.findViewById(R.id.privacypolicy_card);
     View card = holder.findViewById(R.id.about_card);
     if (cardUpdate != null) {
       cardUpdate.setOnClickListener(
@@ -28,13 +29,22 @@ public class AboutInfoPreference extends Preference {
           });
     }
 
-    if (card != null) {
-      card.setOnClickListener(
+    if (privacypolicyCard != null) {
+      privacypolicyCard.setOnClickListener(
           v -> {
             getContext()
                 .startActivity(
                     IntentUtils.openUrl(
-                        getContext(), "https://t.me/md_shamim12"));
+                        getContext(),
+                        "https://docs.google.com/document/d/1w3eL8gUl4GeLxAaYy1dvESZ62gFC6hAd5HS3r8Xb8Ss/edit?usp=drivesdk"));
+          });
+    }
+
+    if (card != null) {
+      card.setOnClickListener(
+          v -> {
+            getContext()
+                .startActivity(IntentUtils.openUrl(getContext(), "https://t.me/md_shamim12"));
           });
     }
 
@@ -54,7 +64,8 @@ public class AboutInfoPreference extends Preference {
           v -> {
             // github link খোলার intent
             getContext()
-                .startActivity(IntentUtils.openUrl(getContext(), "https://github.com/ShafiqulIslamShamim/"));
+                .startActivity(
+                    IntentUtils.openUrl(getContext(), "https://github.com/ShafiqulIslamShamim/"));
           });
     }
   }

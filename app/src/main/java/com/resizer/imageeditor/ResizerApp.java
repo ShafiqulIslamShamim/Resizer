@@ -3,7 +3,7 @@ package com.resizer.imageeditor;
 import android.app.Application;
 import android.content.Context;
 
-public class MyApp extends Application {
+public class ResizerApp extends Application {
   private static Context appContext;
 
   @Override
