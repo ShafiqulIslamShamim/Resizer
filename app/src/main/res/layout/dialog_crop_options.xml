@@ -152,7 +152,7 @@
 
         <TextView
           android:id="@+id/tvQuality"
-          android:text="Quality: 75%"
+          android:text="Quality: 80%"
           android:textAppearance="?attr/textAppearanceTitleSmall"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -161,7 +161,7 @@
         <SeekBar
           android:id="@+id/seekQuality"
           android:max="100"
-          android:progress="75"
+          android:progress="80"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
         />

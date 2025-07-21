@@ -1,16 +1,21 @@
 package com.resizer.imageeditor;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.*;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +31,7 @@ import com.resizer.imageeditor.ui.OptionsDialogCropActivity;
 import com.resizer.imageeditor.utils.ImageUtils;
 import com.yalantis.ucrop.UCrop;
 import java.io.File;
+import java.io.InputStream;
 
 public class CropFragment extends Fragment {
 
@@ -34,7 +40,7 @@ public class CropFragment extends Fragment {
   private TextView tvBeforeLabel, tvAfterLabel;
   private Uri sourceUri, resultUri;
   private Uri selectedFolderUri = null;
-  private int quality = 75;
+  private int quality = 80;
   private String outFormat = "JPEG";
   private boolean keepExif = true;
 
@@ -94,7 +100,8 @@ public class CropFragment extends Fragment {
                 resultUri = UCrop.getOutput(res.getData());
                 if (resultUri != null) {
                   setupImageView(ivAfterImage);
-                  ivAfterImage.setImageURI(resultUri);
+
+                  ivAfterImage.setImageBitmap(loadScaledBitmap(resultUri, 720, 1280, new int[2]));
 
                   ImageInfo info =
                       ImageUtils.resizeCompressCropActivity(
@@ -179,104 +186,156 @@ public class CropFragment extends Fragment {
 
   private void handlePickedImage() {
     try {
-      Bitmap bmp =
-          MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), sourceUri);
-      setupImageView(ivBeforeImage);
-      ivBeforeImage.setImageBitmap(bmp);
-      tvBeforeLabel.setText(
-          "Before: "
-              + bmp.getWidth()
-              + "x"
-              + bmp.getHeight()
-              + ", "
-              + ImageUtils.getFileSizeKb(requireContext(), sourceUri)
-              + " KB");
+      // Get ImageView dimensions (use default if not yet laid out)
 
-      OptionsDialogCropActivity dialog =
-          new OptionsDialogCropActivity(
-              new OptionsDialogCropActivity.OptionsDialogListener() {
-                @Override
-                public void onOptionsSelected(
-                    String format, int q, String aspect, int customW, int customH) {
-                  quality = q;
-                  outFormat = format;
-                  keepExif = true;
+      int reqWidth = 720;
+      int reqHeight = 1280;
 
-                  Uri destUri =
-                      Uri.fromFile(
-                          new File(
-                              requireContext().getCacheDir(),
-                              "cropped" + ImageUtils.getExtension(format)));
+      // Load image dimensions without decoding the full bitmap
+      BitmapFactory.Options options = new BitmapFactory.Options();
+      options.inJustDecodeBounds = true;
+      InputStream inputStream = requireContext().getContentResolver().openInputStream(sourceUri);
+      BitmapFactory.decodeStream(inputStream, null, options);
+      if (inputStream != null) {
+        inputStream.close();
+      }
 
-                  UCrop uCrop = UCrop.of(sourceUri, destUri);
+      // Store original dimensions
+      int originalWidth = options.outWidth;
+      int originalHeight = options.outHeight;
 
-                  switch (aspect) {
-                    case "square":
-                    case "1:1":
-                      uCrop.withAspectRatio(1, 1);
-                      break;
-                    case "4:3":
-                      uCrop.withAspectRatio(4, 3);
-                      break;
-                    case "3:2":
-                      uCrop.withAspectRatio(3, 2);
-                      break;
-                    case "5:4":
-                      uCrop.withAspectRatio(5, 4);
-                      break;
-                    case "16:9":
-                      uCrop.withAspectRatio(16, 9);
-                      break;
-                    case "9:16":
-                      uCrop.withAspectRatio(9, 16);
-                      break;
-                    case "2:1":
-                      uCrop.withAspectRatio(2, 1);
-                      break;
-                    case "21:9":
-                      uCrop.withAspectRatio(21, 9);
-                      break;
-                    case "3:1":
-                      uCrop.withAspectRatio(3, 1);
-                      break;
-                    case "custom":
-                      if (customW > 0 && customH > 0) {
-                        uCrop.withAspectRatio(customW, customH);
-                      }
-                      break;
-                    case "free":
-                      uCrop.useSourceImageAspectRatio(); // optional
-                      uCrop.withOptions(
-                          new UCrop.Options() {
-                            {
-                              setFreeStyleCropEnabled(true);
-                            }
-                          });
-                      break;
-                    case "default":
-                    default:
-                      // Don't enforce any aspect ratio
-                      break;
+      // Calculate inSampleSize for scaling
+      options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+      options.inJustDecodeBounds = false;
+
+      // Decode scaled bitmap
+      inputStream = requireContext().getContentResolver().openInputStream(sourceUri);
+      Bitmap bmp = BitmapFactory.decodeStream(inputStream, null, options);
+      if (inputStream != null) {
+        inputStream.close();
+      }
+
+      if (bmp != null) {
+        setupImageView(ivBeforeImage);
+        ivBeforeImage.setImageBitmap(bmp);
+
+        // Use original dimensions for display
+        tvBeforeLabel.setText(
+            "Before: "
+                + originalWidth
+                + "x"
+                + originalHeight
+                + ", "
+                + ImageUtils.getFileSizeKb(requireContext(), sourceUri)
+                + " KB");
+
+        OptionsDialogCropActivity dialog =
+            new OptionsDialogCropActivity(
+                new OptionsDialogCropActivity.OptionsDialogListener() {
+                  @Override
+                  public void onOptionsSelected(
+                      String format, int q, String aspect, int customW, int customH) {
+                    quality = q;
+                    outFormat = format;
+                    keepExif = true;
+
+                    Uri destUri =
+                        Uri.fromFile(
+                            new File(
+                                requireContext().getCacheDir(),
+                                "cropped" + ImageUtils.getExtension(format)));
+
+                    UCrop uCrop = UCrop.of(sourceUri, destUri);
+
+                    switch (aspect) {
+                      case "square":
+                      case "1:1":
+                        uCrop.withAspectRatio(1, 1);
+                        break;
+                      case "4:3":
+                        uCrop.withAspectRatio(4, 3);
+                        break;
+                      case "3:2":
+                        uCrop.withAspectRatio(3, 2);
+                        break;
+                      case "5:4":
+                        uCrop.withAspectRatio(5, 4);
+                        break;
+                      case "16:9":
+                        uCrop.withAspectRatio(16, 9);
+                        break;
+                      case "9:16":
+                        uCrop.withAspectRatio(9, 16);
+                        break;
+                      case "2:1":
+                        uCrop.withAspectRatio(2, 1);
+                        break;
+                      case "21:9":
+                        uCrop.withAspectRatio(21, 9);
+                        break;
+                      case "3:1":
+                        uCrop.withAspectRatio(3, 1);
+                        break;
+                      case "custom":
+                        if (customW > 0 && customH > 0) {
+                          uCrop.withAspectRatio(customW, customH);
+                        }
+                        break;
+                      case "free":
+                        uCrop.useSourceImageAspectRatio();
+                        uCrop.withOptions(
+                            new UCrop.Options() {
+                              {
+                                setFreeStyleCropEnabled(true);
+                              }
+                            });
+                        break;
+                      case "default":
+                      default:
+                        // Don't enforce any aspect ratio
+                        break;
+                    }
+
+                    cropLauncher.launch(uCrop.getIntent(requireContext()));
                   }
 
-                  cropLauncher.launch(uCrop.getIntent(requireContext()));
-                }
+                  @Override
+                  public void onPickFolderRequested() {
+                    pickFolder();
+                  }
+                });
 
-                @Override
-                public void onPickFolderRequested() {
-                  pickFolder();
-                }
-              });
+        // Inject original image dimensions before showing the dialog
+        dialog.setImageDimensions(originalWidth, originalHeight);
 
-      // 👇 Inject image dimensions before showing the dialog
-      dialog.setImageDimensions(bmp.getWidth(), bmp.getHeight());
-
-      dialog.show(getParentFragmentManager(), "OptionsDialogCropActivity");
+        dialog.show(getParentFragmentManager(), "OptionsDialogCropActivity");
+      } else {
+        throw new Exception("Failed to decode bitmap");
+      }
 
     } catch (Exception e) {
       e.printStackTrace();
       Toast.makeText(requireContext(), "Failed to load image", Toast.LENGTH_SHORT).show();
     }
+  }
+
+  private int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    final int height = options.outHeight;
+    final int width = options.outWidth;
+    int inSampleSize = 1;
+
+    if (height > reqHeight || width > reqWidth) {
+      final int halfHeight = height / 2;
+      final int halfWidth = width / 2;
+
+      // Calculate the largest inSampleSize that is a power of 2 and keeps both
+      // height and width larger than the requested height and width.
+      while ((halfHeight / inSampleSize) >= reqHeight && (halfWidth / inSampleSize) >= reqWidth) {
+        inSampleSize *= 2;
+      }
+    }
+
+    return inSampleSize;
   }
 
   private void pickFolder() {
@@ -313,7 +372,9 @@ public class CropFragment extends Fragment {
 
     if (info != null) {
       setupImageView(ivAfterImage);
-      ivAfterImage.setImageURI(Uri.fromFile(new File(info.outputPath)));
+
+      ivAfterImage.setImageBitmap(
+          loadScaledBitmap(Uri.fromFile(new File(info.outputPath)), 720, 1280, new int[2]));
       tvAfterLabel.setText(
           "Saved: "
               + info.outputPath
@@ -350,5 +411,46 @@ public class CropFragment extends Fragment {
     }
 
     return result;
+  }
+
+  private Bitmap loadScaledBitmap(Uri uri, int reqWidth, int reqHeight, int[] originalDimensions) {
+    try {
+      // Load image dimensions without decoding the full bitmap
+      BitmapFactory.Options options = new BitmapFactory.Options();
+      options.inJustDecodeBounds = true;
+      InputStream inputStream = requireContext().getContentResolver().openInputStream(uri);
+      BitmapFactory.decodeStream(inputStream, null, options);
+      if (inputStream != null) {
+        inputStream.close();
+      }
+
+      // Store original dimensions
+      originalDimensions[0] = options.outWidth;
+      originalDimensions[1] = options.outHeight;
+
+      // Calculate inSampleSize
+      options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+      options.inJustDecodeBounds = false;
+
+      // Decode scaled bitmap
+      inputStream = requireContext().getContentResolver().openInputStream(uri);
+      Bitmap bmp = BitmapFactory.decodeStream(inputStream, null, options);
+      if (inputStream != null) {
+        inputStream.close();
+      }
+      return bmp;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private int[] getScreenResolution() {
+    Display defaultDisplay =
+        ((WindowManager) requireContext().getSystemService(Context.WINDOW_SERVICE))
+            .getDefaultDisplay();
+    Point point = new Point();
+    defaultDisplay.getRealSize(point);
+    return new int[] {point.x, point.y};
   }
 }
