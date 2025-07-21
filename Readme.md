@@ -127,4 +127,4 @@ Let’s make **Resizer** even more powerful together.
 
 ## 📦 Download
 
-📥 **[Download the latest release here](https://github.com/ShafiqulIslamShamim/Resizer/releases/tag/v1.0)**  
+📥 **[Download the latest release here](https://github.com/ShafiqulIslamShamim/Resizer/releases/tag/v1.1)**  
