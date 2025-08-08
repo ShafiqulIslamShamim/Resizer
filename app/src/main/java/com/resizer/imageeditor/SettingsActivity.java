@@ -3,14 +3,18 @@ package com.resizer.imageeditor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.*;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -42,10 +46,12 @@ public class SettingsActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    // ✅ Enable edge-to-edge
-    WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
     applyLocalTheme();
+
     super.onCreate(savedInstanceState);
+
+    applySystemBarIconColors(getWindow());
+
     setContentView(R.layout.activity_settings);
 
     // ✅ Apply insets to root view
@@ -105,6 +111,41 @@ public class SettingsActivity extends AppCompatActivity {
       default:
         setTheme(R.style.AppTheme);
         break;
+    }
+  }
+
+  private void applySystemBarIconColors(Window window) {
+    String themePref = SharedPrefValues.getValue("theme_preference", "0");
+
+    boolean isLightTheme;
+
+    switch (themePref) {
+      case "2": // Dark theme
+        isLightTheme = false;
+        break;
+      case "3": // Light theme
+        isLightTheme = true;
+        break;
+      default:
+        // Follow system theme
+        int nightModeFlags =
+            getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        isLightTheme = (nightModeFlags != Configuration.UI_MODE_NIGHT_YES);
+        break;
+    }
+
+    // Apply system UI bar settings
+    WindowCompat.setDecorFitsSystemWindows(window, false);
+    window.setStatusBarColor(Color.TRANSPARENT);
+    window.setNavigationBarColor(Color.TRANSPARENT);
+
+    WindowInsetsControllerCompat insetsController =
+        WindowCompat.getInsetsController(window, window.getDecorView());
+
+    if (insetsController != null) {
+      // true = dark icons, false = light icons
+      insetsController.setAppearanceLightStatusBars(isLightTheme);
+      insetsController.setAppearanceLightNavigationBars(isLightTheme);
     }
   }
 

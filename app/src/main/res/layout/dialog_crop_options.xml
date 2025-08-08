@@ -7,7 +7,7 @@
   android:padding="16dp"
 >
 
-<LinearLayout
+    <LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -16,10 +16,10 @@
     android:divider="?android:attr/dividerVertical"
     android:showDividers="middle"
     android:dividerPadding="8dp"
-  >  
+  >
 
-    <!-- Aspect Ratio -->  
-    <com.google.android.material.card.MaterialCardView
+        <!-- Resize -->
+        <com.google.android.material.card.MaterialCardView
       style="@style/Monet.Card"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -28,72 +28,57 @@
       app:cardCornerRadius="16dp"
     >
 
-
-    </com.google.android.material.card.MaterialCardView>  
-
-    <!-- Resize -->  
-    <com.google.android.material.card.MaterialCardView
-      style="@style/Monet.Card"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="12dp"
-      app:cardElevation="2dp"
-      app:cardCornerRadius="16dp"
-    >
-
-<LinearLayout
+            <LinearLayout
         android:orientation="vertical"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
       >
-            
-               <TextView
+
+                <TextView
           android:text="Desired resolution"
           android:textAppearance="?attr/textAppearanceTitleSmall"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-        />   
+        />
 
-            <LinearLayout
+                <LinearLayout
           android:orientation="horizontal"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
         >
-                
-                    
 
-                <EditText
+                    <EditText
             android:id="@+id/etWidth"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Width"
             android:inputType="number"
-          />  
+          />
 
-                <TextView
+                    <TextView
             android:text="x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
-          />  
+          />
 
-                <EditText
+                    <EditText
             android:id="@+id/etHeight"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="Height"
             android:inputType="number"
-          />  
-            </LinearLayout>  
-        </LinearLayout>  
-    </com.google.android.material.card.MaterialCardView>  
+          />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    <!-- Format -->  
-    <com.google.android.material.card.MaterialCardView
+        <!-- Compression Format -->
+        <com.google.android.material.card.MaterialCardView
       style="@style/Monet.Card"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -102,55 +87,57 @@
       app:cardCornerRadius="16dp"
     >
 
-<LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-      >  
-
-            <TextView
-          android:text="Compression format"
-          android:textAppearance="?attr/textAppearanceTitleSmall"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-        />  
-
-            <RadioGroup
-          android:id="@+id/rgFormat"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-        >  
-                <RadioButton
-            android:id="@+id/rbJpeg"
-            android:text="JPEG"
-            android:checked="true"
-          />  
-                <RadioButton android:id="@+id/rbPng" android:text="PNG" />  
-                <RadioButton android:id="@+id/rbWebp" android:text="WEBP" />  
-            </RadioGroup>  
-        </LinearLayout>  
-    </com.google.android.material.card.MaterialCardView>  
-
-    <!-- Quality -->  
-<com.google.android.material.card.MaterialCardView
-      style="@style/Monet.Card"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="12dp"
-      app:cardElevation="2dp"
-      app:cardCornerRadius="16dp"
-    >
-
-    <LinearLayout
+            <LinearLayout
         android:orientation="vertical"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
       >
 
-        <TextView
+                <TextView
+          android:text="Compression format"
+          android:textAppearance="?attr/textAppearanceTitleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+        />
+
+                <Spinner
+          android:id="@+id/spinnerFormat"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+        />
+
+                <TextView
+          android:id="@+id/tvFormatSummary"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:text="Select a compression format"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:textAppearance="?attr/textAppearanceBodySmall"
+        />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Quality and Size Restriction -->
+        <com.google.android.material.card.MaterialCardView
+      style="@style/Monet.Card"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="12dp"
+      app:cardElevation="2dp"
+      app:cardCornerRadius="16dp"
+    >
+
+            <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      >
+
+                <TextView
           android:id="@+id/tvQuality"
           android:text="Quality: 80%"
           android:textAppearance="?attr/textAppearanceTitleSmall"
@@ -158,7 +145,7 @@
           android:layout_height="wrap_content"
         />
 
-        <SeekBar
+                <SeekBar
           android:id="@+id/seekQuality"
           android:max="100"
           android:progress="80"
@@ -166,8 +153,8 @@
           android:layout_height="wrap_content"
         />
 
-        <!-- Size Restriction -->
-        <LinearLayout
+                <!-- Size Restriction -->
+                <LinearLayout
           android:orientation="horizontal"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -175,7 +162,7 @@
           android:gravity="center_vertical"
         >
 
-            <TextView
+                    <TextView
             android:id="@+id/tvSizeRestriction"
             android:text="Max file size"
             android:textAppearance="?attr/textAppearanceBodyMedium"
@@ -183,7 +170,7 @@
             android:layout_height="wrap_content"
           />
 
-            <EditText
+                    <EditText
             android:id="@+id/etMaxFileSize"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -193,7 +180,7 @@
             android:inputType="number"
           />
 
-            <TextView
+                    <TextView
             android:id="@+id/tvSizeUnit"
             android:text="KB"
             android:layout_width="wrap_content"
@@ -201,18 +188,12 @@
             android:layout_marginStart="8dp"
             android:textAppearance="?attr/textAppearanceBodySmall"
           />
-        </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
-      
-      
-      
-      
-      
-    <!-- Save Destination with Folder Picker -->
-
-<com.google.android.material.card.MaterialCardView
+        <!-- Save Destination with Folder Picker -->
+        <com.google.android.material.card.MaterialCardView
       style="@style/Monet.Card"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -221,49 +202,49 @@
       app:cardCornerRadius="16dp"
     >
 
-<LinearLayout
+            <LinearLayout
         android:orientation="vertical"
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-      >  
+      >
 
-    <TextView
+                <TextView
           android:text="Save destination"
           android:textAppearance="?attr/textAppearanceTitleSmall"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-        />  
+        />
 
-    <RadioGroup
+                <RadioGroup
           android:id="@+id/rgSaveLocation"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-        >  
+        >
 
-        <RadioButton
+                    <RadioButton
             android:id="@+id/rbSaveInternal"
-            android:text="/Resized/Picture/"
+            android:text="/Pictures/Resized/"
             android:checked="true"
-          />  
+          />
 
-        <RadioButton
+                    <RadioButton
             android:id="@+id/rbSaveToFolder"
             android:text="Select folder manually"
-          />  
-    </RadioGroup>  
+          />
+                </RadioGroup>
 
-    <Button
+                <Button
           android:id="@+id/btnPickFolder"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="Pick Folder"
           android:layout_marginTop="8dp"
           android:visibility="gone"
-        />  
+        />
 
-    <TextView
+                <TextView
           android:id="@+id/tvFolderPath"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -271,14 +252,12 @@
           android:layout_marginTop="4dp"
           android:textColor="?attr/colorOnSurfaceVariant"
           android:textAppearance="?attr/textAppearanceBodySmall"
-        />  
+        />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
-
-</com.google.android.material.card.MaterialCardView>
-
-<!-- Confirm Button -->  
-    <com.google.android.material.button.MaterialButton
+        <!-- Confirm Button -->
+        <com.google.android.material.button.MaterialButton
       android:id="@+id/btnPickCrop"
       android:text="Pick &amp; Crop"
       style="@style/Widget.Material3.Button"
@@ -286,8 +265,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
       android:layout_marginBottom="16dp"
-    />  
+    />
 
-</LinearLayout>
-
+    </LinearLayout>
 </ScrollView>

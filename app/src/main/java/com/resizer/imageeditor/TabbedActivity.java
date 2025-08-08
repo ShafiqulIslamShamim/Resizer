@@ -1,17 +1,22 @@
 package com.resizer.imageeditor;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -27,20 +32,20 @@ public class TabbedActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    // ✅ Enable edge-to-edge
-    WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+
     applyLocalTheme();
     super.onCreate(savedInstanceState);
+
+    applySystemBarIconColors(getWindow());
     ActivityContext = this;
 
     OTAUpdateHelper.checkForUpdatesIfDue(this);
 
     boolean logcat = SharedPrefValues.getValue("enable_logcat", false);
     if (logcat) {
-
-      if (!StoragePermissionHelper.isPermissionGranted(this)) {
-        StoragePermissionHelper.checkAndRequestStoragePermission(this);
-        LogcatSaver.RunLog();
+      StoragePermissionHelper.checkAndRequestStoragePermission(this);
+      if (StoragePermissionHelper.isPermissionGranted(this)) {
+        LogcatSaver.RunLog(this); // Pass context since LogcatSaver now uses SAF
       }
     }
 
@@ -148,13 +153,52 @@ public class TabbedActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
+  private void applySystemBarIconColors(Window window) {
+    String themePref = SharedPrefValues.getValue("theme_preference", "0");
+
+    boolean isLightTheme;
+
+    switch (themePref) {
+      case "2": // Dark theme
+        isLightTheme = false;
+        break;
+      case "3": // Light theme
+        isLightTheme = true;
+        break;
+      default:
+        // Follow system theme
+        int nightModeFlags =
+            getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        isLightTheme = (nightModeFlags != Configuration.UI_MODE_NIGHT_YES);
+        break;
+    }
+
+    // Apply system UI bar settings
+    WindowCompat.setDecorFitsSystemWindows(window, false);
+    window.setStatusBarColor(Color.TRANSPARENT);
+    window.setNavigationBarColor(Color.TRANSPARENT);
+
+    WindowInsetsControllerCompat insetsController =
+        WindowCompat.getInsetsController(window, window.getDecorView());
+
+    if (insetsController != null) {
+      // true = dark icons, false = light icons
+      insetsController.setAppearanceLightStatusBars(isLightTheme);
+      insetsController.setAppearanceLightNavigationBars(isLightTheme);
+    }
+  }
+
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (requestCode == StoragePermissionHelper.REQUEST_CODE_MANAGE_STORAGE) {
+
+    // Handle folder picker result
+    if (requestCode == StoragePermissionHelper.REQUEST_CODE_OLD_STORAGE) {
+      StoragePermissionHelper.handleFolderPickerResult(this, requestCode, resultCode, data);
+
       boolean logcat = SharedPrefValues.getValue("enable_logcat", false);
       if (logcat && StoragePermissionHelper.isPermissionGranted(this)) {
-        LogcatSaver.RunLog();
+        LogcatSaver.RunLog(this);
       }
     }
   }
@@ -163,10 +207,19 @@ public class TabbedActivity extends AppCompatActivity {
   public void onRequestPermissionsResult(
       int requestCode, String[] permissions, int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     if (requestCode == StoragePermissionHelper.REQUEST_CODE_OLD_STORAGE) {
+      boolean granted = true;
+      for (int result : grantResults) {
+        if (result != PackageManager.PERMISSION_GRANTED) {
+          granted = false;
+          break;
+        }
+      }
+
       boolean logcat = SharedPrefValues.getValue("enable_logcat", false);
-      if (logcat && StoragePermissionHelper.isPermissionGranted(this)) {
-        LogcatSaver.RunLog();
+      if (granted && logcat && StoragePermissionHelper.isPermissionGranted(this)) {
+        LogcatSaver.RunLog(this);
       }
     }
   }

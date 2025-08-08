@@ -1,23 +1,22 @@
 package com.resizer.imageeditor.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.exifinterface.media.ExifInterface;
-import com.resizer.imageeditor.*;
 import com.resizer.imageeditor.models.ImageInfo;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ImageUtils {
 
-  // ✅ Get file size in KB
   public static int getFileSizeKb(Context context, Uri uri) {
     try (InputStream input = context.getContentResolver().openInputStream(uri)) {
       if (input != null) {
@@ -29,7 +28,6 @@ public class ImageUtils {
     return 0;
   }
 
-  // ✅ Resize and save image
   public static ImageInfo resizeCompress(
       Context context,
       Uri uri,
@@ -39,51 +37,40 @@ public class ImageUtils {
       String format,
       boolean keepExif,
       boolean save,
-      Uri folderUri, // ✅ Folder Uri to save
+      Uri folderUri,
       String fileName,
-      String sizeLimitKbStr // ✅ KB Restriction
-      ) {
+      String sizeLimitKbStr,
+      boolean isSAFPathEnabled) {
     try {
-
-      // ✅ Decode original bitmap
       BitmapFactory.Options options = new BitmapFactory.Options();
       InputStream input = context.getContentResolver().openInputStream(uri);
       Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
       if (input != null) input.close();
 
-      if (bitmap == null) {
-        throw new Exception("Failed to decode image.");
-      }
+      if (bitmap == null) throw new Exception("Failed to decode image.");
 
-      // ✅ Resize if needed
       if (targetW > 0 && targetH > 0) {
         bitmap = Bitmap.createScaledBitmap(bitmap, targetW, targetH, true);
       }
 
       Bitmap.CompressFormat compressFormat = getCompressFormat(format);
       String extension = getExtension(format);
-      String mimeType = getMimeType(format); // ✅ Proper mimeType
+      String mimeType = getMimeType(format);
 
       if (!save) {
-        // Return bitmap info only
-        // int sizeKb = bitmap.getByteCount() / 1024;
-
-        // ✅ Apply KB Restriction if given
         if (sizeLimitKbStr != null && !sizeLimitKbStr.isEmpty()) {
           int targetSizeKb = Integer.parseInt(sizeLimitKbStr);
           quality = adjustQualityForSize(bitmap, compressFormat, targetSizeKb, quality);
         }
-
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(compressFormat, quality, stream);
         int sizeKb = stream.toByteArray().length / 1024;
-        return new ImageInfo(bitmap.getWidth(), bitmap.getHeight(), sizeKb, format, "");
+        return new ImageInfo(bitmap.getWidth(), bitmap.getHeight(), sizeKb, format, "", "");
       }
 
       Uri savedUri = null;
 
-      // ✅ If folderUri is provided, save via SAF
-      if (folderUri != null) {
+      if (isSAFPathEnabled == true && folderUri != null) {
         DocumentFile pickedDir = DocumentFile.fromTreeUri(context, folderUri);
         if (pickedDir != null && pickedDir.canWrite()) {
           DocumentFile newFile = pickedDir.createFile(mimeType, fileName + extension);
@@ -91,7 +78,6 @@ public class ImageUtils {
             savedUri = newFile.getUri();
             OutputStream out = context.getContentResolver().openOutputStream(savedUri);
 
-            // ✅ Apply KB Restriction if given
             if (sizeLimitKbStr != null && !sizeLimitKbStr.isEmpty()) {
               int targetSizeKb = Integer.parseInt(sizeLimitKbStr);
               quality = adjustQualityForSize(bitmap, compressFormat, targetSizeKb, quality);
@@ -103,26 +89,32 @@ public class ImageUtils {
         }
       }
 
-      // ✅ If SAF not used, save to public Pictures folder
+      // ✅ Save to MediaStore if SAF not used
       if (savedUri == null) {
-        File picturesDir = new File(Environment.getExternalStorageDirectory(), "Resized/Picture");
-        if (!picturesDir.exists()) picturesDir.mkdirs();
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName + extension);
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        values.put(
+            MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/Resized");
 
-        File outFile = new File(picturesDir, fileName + extension);
-        OutputStream out = new FileOutputStream(outFile);
+        Uri imageUri =
+            context
+                .getContentResolver()
+                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        if (imageUri != null) {
+          OutputStream out = context.getContentResolver().openOutputStream(imageUri);
 
-        // ✅ Apply KB Restriction if given
-        if (sizeLimitKbStr != null && !sizeLimitKbStr.isEmpty()) {
-          int targetSizeKb = Integer.parseInt(sizeLimitKbStr);
-          quality = adjustQualityForSize(bitmap, compressFormat, targetSizeKb, quality);
+          if (sizeLimitKbStr != null && !sizeLimitKbStr.isEmpty()) {
+            int targetSizeKb = Integer.parseInt(sizeLimitKbStr);
+            quality = adjustQualityForSize(bitmap, compressFormat, targetSizeKb, quality);
+          }
+
+          bitmap.compress(compressFormat, quality, out);
+          if (out != null) out.close();
+          savedUri = imageUri;
         }
-
-        bitmap.compress(compressFormat, quality, out);
-        if (out != null) out.close();
-        savedUri = Uri.fromFile(outFile);
       }
 
-      // ✅ Copy EXIF data (for JPEG only)
       if (keepExif && "JPEG".equalsIgnoreCase(format)) {
         copyExifData(context, uri, savedUri);
       }
@@ -133,15 +125,14 @@ public class ImageUtils {
           bitmap.getHeight(),
           savedSizeKb,
           format,
-          FileUtils.getPathFromUri(context, savedUri));
-
+          FileUtils.getPathFromUri(context, savedUri),
+          savedUri.toString());
     } catch (Exception e) {
       e.printStackTrace();
     }
     return null;
   }
 
-  // ✅ Resize and save image
   public static ImageInfo resizeCompressCropActivity(
       Context context,
       Uri uri,
@@ -149,84 +140,61 @@ public class ImageUtils {
       String format,
       boolean keepExif,
       boolean save,
-      Uri folderUri, // ✅ Folder Uri to save
-      String fileName) {
+      Uri folderUri,
+      String fileName,
+      boolean isSAFPathEnabled) {
     try {
-
-      // ✅ Decode original bitmap
       BitmapFactory.Options options = new BitmapFactory.Options();
       InputStream input = context.getContentResolver().openInputStream(uri);
       Bitmap bitmap = BitmapFactory.decodeStream(input, null, options);
       if (input != null) input.close();
 
-      if (bitmap == null) {
-        throw new Exception("Failed to decode image.");
-      }
-
-      /*    // ✅ Resize if needed
-      if (targetW > 0 && targetH > 0) {
-          bitmap = Bitmap.createScaledBitmap(bitmap, targetW, targetH, true);
-      }
-
-      */
+      if (bitmap == null) throw new Exception("Failed to decode image.");
 
       Bitmap.CompressFormat compressFormat = getCompressFormat(format);
       String extension = getExtension(format);
-      String mimeType = getMimeType(format); // ✅ Proper mimeType
+      String mimeType = getMimeType(format);
 
       if (!save) {
-        // Return bitmap info only
         int sizeKb = bitmap.getByteCount() / 1024;
-        return new ImageInfo(bitmap.getWidth(), bitmap.getHeight(), sizeKb, format, "");
+        return new ImageInfo(bitmap.getWidth(), bitmap.getHeight(), sizeKb, format, "", "");
       }
 
       Uri savedUri = null;
 
-      // ✅ If folderUri is provided, save via SAF
-      if (folderUri != null) {
+      if (isSAFPathEnabled == true && folderUri != null) {
         DocumentFile pickedDir = DocumentFile.fromTreeUri(context, folderUri);
         if (pickedDir != null && pickedDir.canWrite()) {
           DocumentFile newFile = pickedDir.createFile(mimeType, fileName + extension);
           if (newFile != null) {
             savedUri = newFile.getUri();
             OutputStream out = context.getContentResolver().openOutputStream(savedUri);
-
-            /*         // ✅ Apply KB Restriction if given
-            if (sizeLimitKbStr != null && !sizeLimitKbStr.isEmpty()) {
-                int targetSizeKb = Integer.parseInt(sizeLimitKbStr);
-                quality = adjustQualityForSize(bitmap, compressFormat, targetSizeKb, quality);
-            }
-
-            */
-
             bitmap.compress(compressFormat, quality, out);
             if (out != null) out.close();
           }
         }
       }
 
-      // ✅ If SAF not used, save to public Pictures folder
+      // ✅ Save to MediaStore if SAF not used
       if (savedUri == null) {
-        File picturesDir = new File(Environment.getExternalStorageDirectory(), "Resized/Picture");
-        if (!picturesDir.exists()) picturesDir.mkdirs();
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName + extension);
+        values.put(MediaStore.Images.Media.MIME_TYPE, mimeType);
+        values.put(
+            MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES + "/Resized");
 
-        File outFile = new File(picturesDir, fileName + extension);
-        OutputStream out = new FileOutputStream(outFile);
-
-        /*        // ✅ Apply KB Restriction if given
-        if (sizeLimitKbStr != null && !sizeLimitKbStr.isEmpty()) {
-            int targetSizeKb = Integer.parseInt(sizeLimitKbStr);
-            quality = adjustQualityForSize(bitmap, compressFormat, targetSizeKb, quality);
+        Uri imageUri =
+            context
+                .getContentResolver()
+                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        if (imageUri != null) {
+          OutputStream out = context.getContentResolver().openOutputStream(imageUri);
+          bitmap.compress(compressFormat, quality, out);
+          if (out != null) out.close();
+          savedUri = imageUri;
         }
-
-        */
-
-        bitmap.compress(compressFormat, quality, out);
-        if (out != null) out.close();
-        savedUri = Uri.fromFile(outFile);
       }
 
-      // ✅ Copy EXIF data (for JPEG only)
       if (keepExif && "JPEG".equalsIgnoreCase(format)) {
         copyExifData(context, uri, savedUri);
       }
@@ -237,15 +205,14 @@ public class ImageUtils {
           bitmap.getHeight(),
           savedSizeKb,
           format,
-          FileUtils.getPathFromUri(context, savedUri));
-
+          FileUtils.getPathFromUri(context, savedUri),
+          savedUri.toString());
     } catch (Exception e) {
       e.printStackTrace();
     }
     return null;
   }
 
-  // ✅ Dynamically adjust quality to meet size limit
   private static int adjustQualityForSize(
       Bitmap bitmap, Bitmap.CompressFormat format, int targetSizeKb, int initialQuality) {
     int minQuality = 10;
@@ -261,15 +228,12 @@ public class ImageUtils {
       int sizeKb = baos.toByteArray().length / 1024;
 
       if (sizeKb > targetSizeKb) {
-        // ফাইল বড় হয়ে যাচ্ছে, কম মানে যেতে হবে
         high = midQuality - 1;
       } else {
-        // ফাইল সাইজ সীমার মধ্যে আছে, কিন্তু আরও ভাল মান পাওয়া যায় কি না দেখি
         bestQuality = midQuality;
         low = midQuality + 1;
       }
     }
-
     return bestQuality;
   }
 
@@ -292,7 +256,7 @@ public class ImageUtils {
   private static String getMimeType(String format) {
     if ("PNG".equalsIgnoreCase(format)) return "image/png";
     if ("WEBP".equalsIgnoreCase(format)) return "image/webp";
-    return "image/jpeg"; // default to JPEG
+    return "image/jpeg";
   }
 
   private static void copyExifData(Context context, Uri srcUri, Uri destUri) {

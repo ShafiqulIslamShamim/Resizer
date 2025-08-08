@@ -1,11 +1,18 @@
 package com.resizer.imageeditor;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import androidx.documentfile.provider.DocumentFile;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,21 +21,107 @@ import java.util.regex.Pattern;
 
 public class LogcatSaver {
 
-  public static void RunLog() {
+  private static final String TAG = "LogcatSaver";
 
-    File dir = new File(Environment.getExternalStorageDirectory(), "Resized/Logcat");
-    if (dir.exists()) {
-      dir.delete();
+  /**
+   * Start saving logcat data to file. Uses SAF on Android 11+, legacy storage for older versions.
+   */
+  public static void RunLog(Context context) {
+    if (Build.VERSION.SDK_INT >= 30) {
+      // Android 11+ (Scoped Storage)
+      saveLogToScopedStorage(context);
+    } else {
+      // Android < 11 (Legacy external storage)
+      saveLogToLegacyStorage();
     }
-    dir.mkdirs();
+  }
+
+  /** Scoped Storage: Write logs to user-selected folder */
+  private static void saveLogToScopedStorage(Context context) {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+    String folderUriStr = prefs.getString(StoragePermissionHelper.PREF_LOG_FOLDER_URI, null);
+
+    if (folderUriStr == null) {
+      Log.e(TAG, "Log folder not selected. Please select a folder first.");
+      return;
+    }
+
+    Uri folderUri = Uri.parse(folderUriStr);
+    DocumentFile folder = DocumentFile.fromTreeUri(context, folderUri);
+
+    if (folder == null || !folder.canWrite()) {
+      Log.e(TAG, "Cannot write to the selected folder.");
+      return;
+    }
 
     String fileName =
-        "Resized_" + Build.MANUFACTURER + "_" + Build.MODEL + "(" + Build.DEVICE + ")" + ".json";
+        "Encryptor_Logcat_"
+            + Build.MANUFACTURER
+            + "_"
+            + Build.MODEL
+            + "("
+            + Build.DEVICE
+            + ")"
+            + ".json";
+
+    // Delete existing file if it exists
+    DocumentFile existingFile = folder.findFile(fileName);
+    if (existingFile != null) {
+      existingFile.delete();
+    }
+
+    // Create a new file
+    DocumentFile logFile = folder.createFile("application/json", fileName);
+    if (logFile == null) {
+      Log.e(TAG, "Failed to create log file.");
+      return;
+    }
+
+    Uri fileUri = logFile.getUri();
+    try {
+      OutputStream outputStream =
+          context.getContentResolver().openOutputStream(fileUri, "w"); // overwrite mode
+      OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+
+      String buildInfo = BuildPropHelper.getBuildPropInfo("android.os.Build");
+      String versionInfo = BuildPropHelper.getBuildPropInfo("android.os.Build$VERSION");
+      String logs =
+          "--------- beginning of build info\n"
+              + buildInfo
+              + "\n--------- beginning of version info\n"
+              + versionInfo
+              + "\n"
+              + formatLogOutput();
+
+      writer.write(logs);
+      writer.flush();
+      writer.close();
+
+      Log.e(TAG, "Log file saved successfully in Scoped Storage.");
+    } catch (Exception e) {
+      Log.e(TAG, "Error writing log file: " + e.getMessage(), e);
+    }
+  }
+
+  /** Legacy storage: Write logs to /storage/emulated/0 */
+  private static void saveLogToLegacyStorage() {
+    File dir = new File(Environment.getExternalStorageDirectory(), "Resizer/Logcat");
+
+    if (dir.exists()) {
+      deleteRecursive(dir);
+    }
+    if (!dir.mkdirs()) {
+      Log.e(TAG, "Failed to create directory: " + dir.getAbsolutePath());
+      return;
+    }
+
+    String fileName =
+        "Resizer_" + Build.MANUFACTURER + "_" + Build.MODEL + "(" + Build.DEVICE + ")" + ".json";
 
     File file = new File(dir, fileName);
     String buildInfo = BuildPropHelper.getBuildPropInfo("android.os.Build");
     String versionInfo = BuildPropHelper.getBuildPropInfo("android.os.Build$VERSION");
-    String info =
+    String logs =
         "--------- beginning of build info\n"
             + buildInfo
             + "\n--------- beginning of version info\n"
@@ -37,15 +130,19 @@ public class LogcatSaver {
             + formatLogOutput();
 
     try {
-      FileOutputStream fos = new FileOutputStream(file);
+      FileOutputStream fos = new FileOutputStream(file, false); // overwrite mode
       OutputStreamWriter writer = new OutputStreamWriter(fos);
-      writer.write(info);
+      writer.write(logs);
+      writer.flush();
       writer.close();
+
+      Log.e(TAG, "Log file saved successfully in Legacy Storage.");
     } catch (Exception e) {
-      e.printStackTrace();
+      Log.e(TAG, "Error writing log file: " + e.getMessage(), e);
     }
   }
 
+  /** Format logcat output into sections */
   public static String formatLogOutput() {
     Map<String, StringBuilder> logcatOutput = getLogcatOutput();
     StringBuilder sb = new StringBuilder();
@@ -168,5 +265,18 @@ public class LogcatSaver {
     }
 
     return logMap;
+  }
+
+  /** Recursively delete directory contents */
+  private static void deleteRecursive(File fileOrDirectory) {
+    if (fileOrDirectory.isDirectory()) {
+      File[] children = fileOrDirectory.listFiles();
+      if (children != null) {
+        for (File child : children) {
+          deleteRecursive(child);
+        }
+      }
+    }
+    fileOrDirectory.delete();
   }
 }

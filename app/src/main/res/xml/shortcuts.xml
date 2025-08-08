@@ -4,7 +4,7 @@
     <shortcut
     android:shortcutId="open_main"
     android:enabled="true"
-    android:icon="@drawable/home_24px_shortcut"
+    android:icon="@mipmap/home_shortcut"
     android:shortcutShortLabel="@string/shortcut_main_short"
     android:shortcutLongLabel="@string/shortcut_main_long"
   >
@@ -19,7 +19,7 @@
     <shortcut
     android:shortcutId="open_settings"
     android:enabled="true"
-    android:icon="@drawable/settings_24px_shortcut"
+    android:icon="@mipmap/settings_shortcut"
     android:shortcutShortLabel="@string/shortcut_settings_short"
     android:shortcutLongLabel="@string/shortcut_settings_long"
   >

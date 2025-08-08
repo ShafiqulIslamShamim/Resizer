@@ -43,6 +43,7 @@ public class CropFragment extends Fragment {
   private int quality = 80;
   private String outFormat = "JPEG";
   private boolean keepExif = true;
+  private boolean isSAFPath = false;
 
   private ActivityResultLauncher<Intent> pickImageLauncher;
   private ActivityResultLauncher<Intent> cropLauncher;
@@ -112,7 +113,8 @@ public class CropFragment extends Fragment {
                           keepExif,
                           false,
                           null,
-                          null);
+                          null,
+                          isSAFPath);
 
                   if (info != null) {
                     tvAfterLabel.setText(
@@ -167,14 +169,6 @@ public class CropFragment extends Fragment {
 
     btnSaveImage.setOnClickListener(
         v -> {
-          if (!StoragePermissionHelper.isPermissionGranted(TabbedActivity.ActivityContext)) {
-
-            StoragePermissionHelper.checkAndRequestStoragePermission(
-                TabbedActivity.ActivityContext);
-
-            return;
-          }
-
           if (resultUri != null) {
             processImage();
           } else {
@@ -234,10 +228,16 @@ public class CropFragment extends Fragment {
                 new OptionsDialogCropActivity.OptionsDialogListener() {
                   @Override
                   public void onOptionsSelected(
-                      String format, int q, String aspect, int customW, int customH) {
+                      String format,
+                      int q,
+                      String aspect,
+                      int customW,
+                      int customH,
+                      boolean isSAFEnabled) {
                     quality = q;
                     outFormat = format;
                     keepExif = true;
+                    isSAFPath = isSAFEnabled;
 
                     Uri destUri =
                         Uri.fromFile(
@@ -368,13 +368,14 @@ public class CropFragment extends Fragment {
             keepExif,
             true,
             selectedFolderUri,
-            fileName);
+            fileName,
+            isSAFPath);
 
     if (info != null) {
       setupImageView(ivAfterImage);
 
       ivAfterImage.setImageBitmap(
-          loadScaledBitmap(Uri.fromFile(new File(info.outputPath)), 720, 1280, new int[2]));
+          loadScaledBitmap(Uri.parse(info.outputUri), 720, 1280, new int[2]));
       tvAfterLabel.setText(
           "Saved: "
               + info.outputPath

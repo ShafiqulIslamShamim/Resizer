@@ -17,82 +17,8 @@
     android:showDividers="middle"
     android:dividerPadding="8dp"
   >
-        
-          
-            
-<!-- Aspect Ratio -->
-<com.google.android.material.card.MaterialCardView
-      style="@style/Monet.Card"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="12dp"
-      app:cardElevation="2dp"
-      app:cardCornerRadius="16dp"
-    >
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-      >
-
-        <TextView
-          android:id="@+id/tvAspectRatio"
-          android:text="Aspect ratio"
-          android:textAppearance="?attr/textAppearanceTitleSmall"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-        />
-
-        <RadioGroup
-          android:id="@+id/rgAspectRatio"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-        />
-
-        <LinearLayout
-          android:id="@+id/layoutCustomAspectRatio"
-          android:orientation="horizontal"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
-          android:gravity="center_vertical"
-          android:visibility="gone"
-        >
-
-            <EditText
-            android:id="@+id/etCustomWidth"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Width"
-            android:maxLength="4"
-          />
-
-            <TextView
-            android:text=" : "
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
-          />
-
-            <EditText
-            android:id="@+id/etCustomHeight"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:hint="Height"
-            android:maxLength="4"
-          />
-        </LinearLayout>
-    </LinearLayout>
-</com.google.android.material.card.MaterialCardView>
-
-        <!-- Format -->  
+        <!-- Aspect Ratio -->
         <com.google.android.material.card.MaterialCardView
       style="@style/Monet.Card"
       android:layout_width="match_parent"
@@ -107,7 +33,89 @@
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-      >  
+      >
+
+                <TextView
+          android:id="@+id/tvAspectRatio"
+          android:text="Aspect ratio"
+          android:textAppearance="?attr/textAppearanceTitleSmall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+        />
+
+                <Spinner
+          android:id="@+id/spinnerAspectRatio"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+        />
+
+                <TextView
+          android:id="@+id/tvAspectRatioSummary"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:text="Select an aspect ratio"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:textAppearance="?attr/textAppearanceBodySmall"
+        />
+
+                <LinearLayout
+          android:id="@+id/layoutCustomAspectRatio"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="8dp"
+          android:gravity="center_vertical"
+          android:visibility="gone"
+        >
+
+                    <EditText
+            android:id="@+id/etCustomWidth"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Width"
+            android:maxLength="4"
+          />
+
+                    <TextView
+            android:text=" : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="8dp"
+          />
+
+                    <EditText
+            android:id="@+id/etCustomHeight"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Height"
+            android:maxLength="4"
+          />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Compression Format -->
+        <com.google.android.material.card.MaterialCardView
+      style="@style/Monet.Card"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="12dp"
+      app:cardElevation="2dp"
+      app:cardCornerRadius="16dp"
+    >
+
+            <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+      >
 
                 <TextView
           android:id="@+id/tvCompressionFormat_new"
@@ -115,35 +123,28 @@
           android:textAppearance="?attr/textAppearanceTitleSmall"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-        />  
+        />
 
-                <RadioGroup
-          android:id="@+id/rgCompressionFormat_new"
+                <Spinner
+          android:id="@+id/spinnerCompressionFormat"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-        >  
+        />
 
-                    <RadioButton
-            android:id="@+id/rbFormatJpeg_new"
-            android:text="JPEG"
-            android:checked="true"
-          />  
+                <TextView
+          android:id="@+id/tvCompressionFormatSummary"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:text="Select a compression format"
+          android:textColor="?attr/colorOnSurfaceVariant"
+          android:textAppearance="?attr/textAppearanceBodySmall"
+        />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-                    <RadioButton
-            android:id="@+id/rbFormatPng_new"
-            android:text="PNG"
-          />  
-
-                    <RadioButton
-            android:id="@+id/rbFormatWebp_new"
-            android:text="WEBP"
-          />  
-                </RadioGroup>  
-            </LinearLayout>  
-        </com.google.android.material.card.MaterialCardView>  
-
-        <!-- Quality -->  
+        <!-- Quality -->
         <com.google.android.material.card.MaterialCardView
       style="@style/Monet.Card"
       android:layout_width="match_parent"
@@ -177,7 +178,7 @@
         />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
-          
+
         <!-- Save Destination with Folder Picker -->
         <com.google.android.material.card.MaterialCardView
       style="@style/Monet.Card"
@@ -193,7 +194,7 @@
         android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-      >  
+      >
 
                 <TextView
           android:id="@+id/tvSaveDestination_new"
@@ -201,26 +202,26 @@
           android:textAppearance="?attr/textAppearanceTitleSmall"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-        />  
+        />
 
                 <RadioGroup
           android:id="@+id/rgSaveLocation_new"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:layout_marginTop="8dp"
-        >  
+        >
 
                     <RadioButton
             android:id="@+id/rbSaveInternal_new"
-            android:text="/Resized/Picture/"
+            android:text="/Pictures/Resized/"
             android:checked="true"
-          />  
+          />
 
                     <RadioButton
             android:id="@+id/rbSaveToFolder_new"
             android:text="Select folder manually"
-          />  
-                </RadioGroup>  
+          />
+                </RadioGroup>
 
                 <Button
           android:id="@+id/btnPickFolder_new"
@@ -229,7 +230,7 @@
           android:text="Pick Folder"
           android:layout_marginTop="8dp"
           android:visibility="gone"
-        />  
+        />
 
                 <TextView
           android:id="@+id/tvSelectedFolderPath_new"
@@ -239,13 +240,12 @@
           android:layout_marginTop="4dp"
           android:textColor="?attr/colorOnSurfaceVariant"
           android:textAppearance="?attr/textAppearanceBodySmall"
-        />  
+        />
 
             </LinearLayout>
-
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Confirm Button -->  
+        <!-- Confirm Button -->
         <com.google.android.material.button.MaterialButton
       android:id="@+id/btnPickAndCrop_new"
       android:text="Pick &amp; Crop"
@@ -254,8 +254,7 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="8dp"
       android:layout_marginBottom="16dp"
-    />  
+    />
 
     </LinearLayout>
-
 </ScrollView>

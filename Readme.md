@@ -36,7 +36,7 @@ Choose how to compress:
 Ideal for upload size restrictions.
 
 ### 💾 Smart Save Destinations
-- Default: `/Resized/Picture/`
+- Default: `/Pictures/Resized/`
 - Or choose **any custom folder** using the built-in folder picker
 
 ### ✂️ Advanced Crop Tool
@@ -127,4 +127,4 @@ Let’s make **Resizer** even more powerful together.
 
 ## 📦 Download
 
-📥 **[Download the latest release here](https://github.com/ShafiqulIslamShamim/Resizer/releases/tag/v1.1)**  
+📥 **[Download the latest release here](https://github.com/ShafiqulIslamShamim/Resizer/releases/tag/v1.3)**  

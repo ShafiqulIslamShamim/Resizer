@@ -4,8 +4,7 @@
     name="AppTheme"
     parent="Theme.Material3.DynamicColors.DayNight.NoActionBar"
   >
-  <item name="android:statusBarColor">?attr/colorSurface</item>
-  <item name="android:navigationBarColor">?attr/colorSurface</item>
+  
 </style>
 
 
@@ -13,8 +12,7 @@
     name="AppThemeLight"
     parent="Theme.Material3.DynamicColors.Light.NoActionBar"
   >
-  <item name="android:statusBarColor">?attr/colorSurface</item>
-  <item name="android:navigationBarColor">?attr/colorSurface</item>
+  
 </style>
 
 
@@ -22,7 +20,6 @@
     name="AppThemeDark"
     parent="Theme.Material3.DynamicColors.Dark.NoActionBar"
   >
-  <item name="android:statusBarColor">?attr/colorSurface</item>
-  <item name="android:navigationBarColor">?attr/colorSurface</item>
+  
 </style>
 </resources>
