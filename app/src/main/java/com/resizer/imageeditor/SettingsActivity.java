@@ -7,14 +7,12 @@ import android.content.res.Configuration;
 import android.graphics.*;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -50,7 +48,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     super.onCreate(savedInstanceState);
 
-    applySystemBarIconColors(getWindow());
+    applySystemBarIconColors();
 
     setContentView(R.layout.activity_settings);
 
@@ -114,7 +112,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
   }
 
-  private void applySystemBarIconColors(Window window) {
+  private void applySystemBarIconColors() {
     String themePref = SharedPrefValues.getValue("theme_preference", "0");
 
     boolean isLightTheme;
@@ -134,19 +132,8 @@ public class SettingsActivity extends AppCompatActivity {
         break;
     }
 
-    // Apply system UI bar settings
-    WindowCompat.setDecorFitsSystemWindows(window, false);
-    window.setStatusBarColor(Color.TRANSPARENT);
-    window.setNavigationBarColor(Color.TRANSPARENT);
-
-    WindowInsetsControllerCompat insetsController =
-        WindowCompat.getInsetsController(window, window.getDecorView());
-
-    if (insetsController != null) {
-      // true = dark icons, false = light icons
-      insetsController.setAppearanceLightStatusBars(isLightTheme);
-      insetsController.setAppearanceLightNavigationBars(isLightTheme);
-    }
+    // Enable edge-to-edge (backward compatible)
+    EdgeToEdge.enable(this);
   }
 
   @Override

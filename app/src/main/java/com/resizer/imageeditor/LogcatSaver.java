@@ -55,7 +55,7 @@ public class LogcatSaver {
     }
 
     String fileName =
-        "Encryptor_Logcat_"
+        "Resizer_Logcat_"
             + Build.MANUFACTURER
             + "_"
             + Build.MODEL

@@ -3,20 +3,17 @@ package com.resizer.imageeditor;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -36,7 +33,7 @@ public class TabbedActivity extends AppCompatActivity {
     applyLocalTheme();
     super.onCreate(savedInstanceState);
 
-    applySystemBarIconColors(getWindow());
+    applySystemBarIconColors();
     ActivityContext = this;
 
     OTAUpdateHelper.checkForUpdatesIfDue(this);
@@ -153,7 +150,7 @@ public class TabbedActivity extends AppCompatActivity {
     return super.onOptionsItemSelected(item);
   }
 
-  private void applySystemBarIconColors(Window window) {
+  private void applySystemBarIconColors() {
     String themePref = SharedPrefValues.getValue("theme_preference", "0");
 
     boolean isLightTheme;
@@ -173,19 +170,8 @@ public class TabbedActivity extends AppCompatActivity {
         break;
     }
 
-    // Apply system UI bar settings
-    WindowCompat.setDecorFitsSystemWindows(window, false);
-    window.setStatusBarColor(Color.TRANSPARENT);
-    window.setNavigationBarColor(Color.TRANSPARENT);
-
-    WindowInsetsControllerCompat insetsController =
-        WindowCompat.getInsetsController(window, window.getDecorView());
-
-    if (insetsController != null) {
-      // true = dark icons, false = light icons
-      insetsController.setAppearanceLightStatusBars(isLightTheme);
-      insetsController.setAppearanceLightNavigationBars(isLightTheme);
-    }
+    // Enable edge-to-edge (backward compatible)
+    EdgeToEdge.enable(this);
   }
 
   @Override

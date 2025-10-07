@@ -64,7 +64,7 @@ public class OptionsDialogCropActivity extends DialogFragment {
     ArrayList<String> formatOptions = new ArrayList<>(Arrays.asList("JPEG", "PNG", "WEBP"));
     ArrayAdapter<String> formatAdapter =
         new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, formatOptions);
-    formatAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    formatAdapter.setDropDownViewResource(R.layout.m3_spinner_dropdown_item);
     spinnerFormat.setAdapter(formatAdapter);
     spinnerFormat.setSelection(0); // Default to JPEG
     tvFormatSummary.setText("Selected: JPEG");
@@ -87,7 +87,7 @@ public class OptionsDialogCropActivity extends DialogFragment {
     populateAspectRatioOptions(aspectOptions);
     ArrayAdapter<String> aspectAdapter =
         new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, aspectOptions);
-    aspectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    aspectAdapter.setDropDownViewResource(R.layout.m3_spinner_dropdown_item);
     spinnerAspect.setAdapter(aspectAdapter);
     spinnerAspect.setSelection(aspectOptions.indexOf("Default")); // Default to "Default"
     tvAspectSummary.setText("Selected: Default");
