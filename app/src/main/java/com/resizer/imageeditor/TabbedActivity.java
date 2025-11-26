@@ -2,18 +2,11 @@ package com.resizer.imageeditor;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
@@ -21,7 +14,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class TabbedActivity extends AppCompatActivity {
+public class TabbedActivity extends BaseActivity {
 
   private static final String TAG = "TabbedActivity";
 
@@ -29,11 +22,7 @@ public class TabbedActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-
-    applyLocalTheme();
     super.onCreate(savedInstanceState);
-
-    applySystemBarIconColors();
     ActivityContext = this;
 
     OTAUpdateHelper.checkForUpdatesIfDue(this);
@@ -47,16 +36,6 @@ public class TabbedActivity extends AppCompatActivity {
     }
 
     setContentView(R.layout.activity_tabbed);
-
-    // ✅ Apply insets to root view
-    View rootView = findViewById(android.R.id.content);
-    ViewCompat.setOnApplyWindowInsetsListener(
-        rootView,
-        (v, insets) -> {
-          Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-          v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-          return insets;
-        });
 
     MaterialToolbar toolbar = findViewById(R.id.topAppBar);
     setSupportActionBar(toolbar);
@@ -78,21 +57,6 @@ public class TabbedActivity extends AppCompatActivity {
         });
     new TabLayoutMediator(tabLayout, vp, (tab, pos) -> tab.setText(pos == 0 ? "Editor" : "Crop"))
         .attach();
-  }
-
-  private void applyLocalTheme() {
-    String themePref = SharedPrefValues.getValue("theme_preference", "0");
-    switch (themePref) {
-      case "2": // Dark
-        setTheme(R.style.AppThemeDark);
-        break;
-      case "3": // Light
-        setTheme(R.style.AppThemeLight);
-        break;
-      default: // System/default
-        setTheme(R.style.AppTheme);
-        break;
-    }
   }
 
   @Override
@@ -148,30 +112,6 @@ public class TabbedActivity extends AppCompatActivity {
     }
 
     return super.onOptionsItemSelected(item);
-  }
-
-  private void applySystemBarIconColors() {
-    String themePref = SharedPrefValues.getValue("theme_preference", "0");
-
-    boolean isLightTheme;
-
-    switch (themePref) {
-      case "2": // Dark theme
-        isLightTheme = false;
-        break;
-      case "3": // Light theme
-        isLightTheme = true;
-        break;
-      default:
-        // Follow system theme
-        int nightModeFlags =
-            getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        isLightTheme = (nightModeFlags != Configuration.UI_MODE_NIGHT_YES);
-        break;
-    }
-
-    // Enable edge-to-edge (backward compatible)
-    EdgeToEdge.enable(this);
   }
 
   @Override

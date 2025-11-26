@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+    android:id="@+id/action_copy"
+    android:title="Copy"
+    android:icon="@drawable/ic_copy"
+    android:showAsAction="ifRoom"
+  />
+    <item
+    android:id="@+id/action_share"
+    android:title="Share"
+    android:icon="@android:drawable/ic_menu_share"
+    android:showAsAction="ifRoom"
+  />
+    <item
+    android:id="@+id/action_restart"
+    android:title="Restart"
+    android:icon="@android:drawable/ic_menu_revert"
+    android:showAsAction="ifRoom"
+  />
+</menu>

@@ -82,11 +82,12 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-# androidide
-.androidide
+# acside
+.acside
 
 # signature file
 app/keystore
 
 # build
 app/build
+build/

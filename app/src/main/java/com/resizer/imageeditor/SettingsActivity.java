@@ -3,22 +3,15 @@ package com.resizer.imageeditor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.*;
 import android.os.Bundle;
-import android.view.View;
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends BaseActivity {
 
   private static final String EXTRA_PREF_KEY = "pref_key";
   private static final String EXTRA_PREF_TITLE = "pref_title";
@@ -44,23 +37,10 @@ public class SettingsActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    applyLocalTheme();
 
     super.onCreate(savedInstanceState);
 
-    applySystemBarIconColors();
-
     setContentView(R.layout.activity_settings);
-
-    // ✅ Apply insets to root view
-    View rootView = findViewById(android.R.id.content);
-    ViewCompat.setOnApplyWindowInsetsListener(
-        rootView,
-        (v, insets) -> {
-          Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-          v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-          return insets;
-        });
 
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     prefs.edit().putBoolean(PREF_CHANGE_FLAG, false).apply();
@@ -95,45 +75,6 @@ public class SettingsActivity extends AppCompatActivity {
     if (getSupportActionBar() != null) {
       getSupportActionBar().setTitle(prefTitle != null ? prefTitle : "Settings");
     }
-  }
-
-  private void applyLocalTheme() {
-    String themePref = SharedPrefValues.getValue("theme_preference", "0");
-    switch (themePref) {
-      case "2":
-        setTheme(R.style.AppThemeDark);
-        break;
-      case "3":
-        setTheme(R.style.AppThemeLight);
-        break;
-      default:
-        setTheme(R.style.AppTheme);
-        break;
-    }
-  }
-
-  private void applySystemBarIconColors() {
-    String themePref = SharedPrefValues.getValue("theme_preference", "0");
-
-    boolean isLightTheme;
-
-    switch (themePref) {
-      case "2": // Dark theme
-        isLightTheme = false;
-        break;
-      case "3": // Light theme
-        isLightTheme = true;
-        break;
-      default:
-        // Follow system theme
-        int nightModeFlags =
-            getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        isLightTheme = (nightModeFlags != Configuration.UI_MODE_NIGHT_YES);
-        break;
-    }
-
-    // Enable edge-to-edge (backward compatible)
-    EdgeToEdge.enable(this);
   }
 
   @Override
