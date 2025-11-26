@@ -1,5 +1,5 @@
-﻿[1.5]
-[1.5]
+﻿[1.6]
+[1.6]
 [What's new!
 
 - Fixed many previously reported bugs.]
